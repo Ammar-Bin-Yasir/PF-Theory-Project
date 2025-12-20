@@ -3,7 +3,7 @@
 using namespace std;
 
 // Constants
-int TotalSubjects = 7;
+const int TotalSubjects = 7;
 
 
 
@@ -17,7 +17,7 @@ struct Course
 	// total wieghted marks out of 100
 	float totalMarks;
 
-	char grade[2]
+	char grade[2];
 };
 
 struct Student
