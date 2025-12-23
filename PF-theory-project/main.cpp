@@ -65,7 +65,7 @@ int main()
 
 		switch (n)
 		{
-			// Display the struct in a ascii art type table
+			// Display the struct in an ascii art type table
 			case 1:
 			{
 				break;
@@ -126,3 +126,4 @@ void loadRecords(Student student[])
 {
 
 }
+
