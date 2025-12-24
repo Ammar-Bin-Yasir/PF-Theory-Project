@@ -33,10 +33,10 @@ struct Student
 // Function Prototypes
 void loadMockData(Student students[]);
 void calculateStudentResults(Student& s);
-float courseTotalMarks(Course& c);
+float courseTotalMarks(const Course& c);
 float getGradePoint(float totalMarks);
 string getGradeLetter(float totalMarks);
-float calculateSGPA(Student& s);
+float calculateSGPA(const Student& s);
 string getSemesterGrade(float sgpa);
 
 int main()
@@ -130,7 +130,7 @@ void calculateStudentResults(Student& s)
     s.finalGrade = getSemesterGrade(s.sgpa);
 }
 
-float courseTotalMarks(Course& c)
+float courseTotalMarks(const Course& c)
 {
     
     float total = 0.0f;
@@ -144,7 +144,7 @@ float courseTotalMarks(Course& c)
     return total;
 }
 
-float calculateSGPA(Student& s)
+float calculateSGPA(const Student& s)
 {
     int totalCrHrs = 0;
     float totalQualityPoints = 0.0f;
