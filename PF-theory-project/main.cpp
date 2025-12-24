@@ -132,6 +132,28 @@ void loadRecords(Student students[])
 
 }
 
+void rankStudents(Student s[])
+{
+
+}
+
+void loadMockData(Student students[]) {
+	students[0].id = 2025560;
+	students[0].name = "Ammar Bin Yasir";
+
+	// Fill one subject for testing
+	students[0].subjects[0].courseName = "PF";
+	students[0].subjects[0].crHrs = 3;
+	students[0].subjects[0].quiz[0] = 8;     // out of 10
+	students[0].subjects[0].quiz[1] = 9;
+	students[0].subjects[0].assignment = 10;
+	students[0].subjects[0].mids = 25;       // out of 30
+	students[0].subjects[0].finals = 40;     // out of 50
+
+	// You would call calculateGPA() here next!
+
+}
+
 
 float getGradePoint(float totalMarks) 
 {
@@ -164,25 +186,3 @@ void  calcuateSGPA(Student &s)
 }
 
 
-
-void rankStudents(Student s[])
-{
-
-}
-
-void loadMockData(Student students[]) {
-	students[0].id = 2025560;
-	students[0].name = "Ammar Bin Yasir";
-
-	// Fill one subject for testing
-	students[0].subjects[0].courseName = "PF";
-	students[0].subjects[0].crHrs = 3;
-	students[0].subjects[0].quiz[0] = 8;     // out of 10
-	students[0].subjects[0].quiz[1] = 9;
-	students[0].subjects[0].assignment = 10;
-	students[0].subjects[0].mids = 25;       // out of 30
-	students[0].subjects[0].finals = 40;     // out of 50
-
-	// You would call calculateGPA() here next!
-
-}
