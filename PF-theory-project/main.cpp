@@ -17,7 +17,7 @@ struct Course
 	// total wieghted marks out of 100
 	float totalMarks;
 
-	char grade[2];
+	string grade;
 };
 
 struct Student
@@ -30,7 +30,7 @@ struct Student
 	// wieghted sum of all course points / total cr.hrs
 	float sgpa;
 
-	char finalGrade[2];
+	string finalGrade;
 };
 
 
@@ -155,20 +155,20 @@ void loadMockData(Student students[]) {
 }
 
 
-float getGradePoint(float totalMarks) 
+string getGradeLetter(float totalMarks) 
 {
-	if (totalMarks >= 90) return 4.0;
-	else if (totalMarks >= 86 && totalMarks <= 89) return 4.0;
-	else if (totalMarks >= 82 && totalMarks <= 85) return 3.7;
-	else if (totalMarks >= 78 && totalMarks <= 81) return 3.3;
-	else if (totalMarks >= 74 && totalMarks <= 77) return 3.0;
-	else if (totalMarks >=70  && totalMarks <=73 ) return 2.7;
-	else if (totalMarks >= 66 && totalMarks <= 69) return 2.3;
-	else if (totalMarks >=62  && totalMarks <=65 ) return 2.0;
-	else if (totalMarks >= 58 && totalMarks <= 61) return 1.7;
-	else if (totalMarks >= 54 && totalMarks <= 57) return 1.3;
-	else if (totalMarks >= 50 && totalMarks <= 53) return 1.0;
-	else if (totalMarks <=50) return 0.0;
+	if (totalMarks >= 90) return "A+";
+	else if (totalMarks >= 86 && totalMarks <= 89) return "A";
+	else if (totalMarks >= 82 && totalMarks <= 85) return "A-";
+	else if (totalMarks >= 78 && totalMarks <= 81) return "B+";
+	else if (totalMarks >= 74 && totalMarks <= 77) return "B";
+	else if (totalMarks >= 70 && totalMarks <= 73) return "B-";
+	else if (totalMarks >= 66 && totalMarks <= 69) return "C+";
+	else if (totalMarks >=62  && totalMarks <=65 ) return "C";
+	else if (totalMarks >= 58 && totalMarks <= 61) return "C-";
+	else if (totalMarks >= 54 && totalMarks <= 57) return "D+";
+	else if (totalMarks >= 50 && totalMarks <= 53) return "D";
+	else if (totalMarks <=50) return "F";
 
 }
 
@@ -184,5 +184,38 @@ void  calcuateSGPA(Student &s)
 	}
 	s.sgpa = totalsum / totalCrHrs;
 }
+
+void Sgrade(Student &s) 
+{
+	if (s.sgpa == 4.0)
+		s.finalGrade = "A+";
+	else if (s.sgpa <= 3.9 && s.sgpa >= 3.7)
+		s.finalGrade = "A";
+	else if (s.sgpa <= 3.7 && s.sgpa >= 3.3)
+		s.finalGrade = "A-";
+	else if (s.sgpa <= 3.3 && s.sgpa >=3.0)
+		s.finalGrade = "B+";
+	else if (s.sgpa <= 3.0 && s.sgpa >=2.7)
+		s.finalGrade = "B";
+	else if (s.sgpa <= 2.7 && s.sgpa >=2.3)
+		s.finalGrade = "B-";
+	else if (s.sgpa <= 2.3 && s.sgpa >=2.0)
+		s.finalGrade = "C+";
+	else if (s.sgpa <= 2.0 && s.sgpa >=1.7)
+		s.finalGrade = "C";
+	else if (s.sgpa <= 1.7 && s.sgpa >= 1.3)
+		s.finalGrade = "C-";
+	else if (s.sgpa <= 1.3 && s.sgpa >= 1.0)
+		s.finalGrade = "D+";
+	else if (s.sgpa <= 1.0 && s.sgpa >= 0.0)
+		s.finalGrade = "D";
+	else if (s.sgpa == 0.0)
+		s.finalGrade = "F";
+	
+
+	
+}
+
+
 
 
