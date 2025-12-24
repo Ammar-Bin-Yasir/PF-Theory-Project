@@ -12,7 +12,7 @@ struct Course
 	string courseName;
 	int crHrs;
 
-	float quiz[2], assignment, mids, finals;
+	float quiz[2], assignment, mids, finals; 
 
 	// total wieghted marks out of 100
 	float totalMarks;
@@ -65,7 +65,7 @@ int main()
 
 		switch (n)
 		{
-			// Display the struct in a ascii art type table
+			// Display the struct in an ascii art type table
 			case 1:
 			{
 				break;
@@ -131,6 +131,38 @@ void loadRecords(Student students[])
 {
 
 }
+
+
+float getGradePoint(float totalMarks) 
+{
+	if (totalMarks >= 90) return 4.0;
+	else if (totalMarks >= 86 && totalMarks <= 89) return 4.0;
+	else if (totalMarks >= 82 && totalMarks <= 85) return 3.7;
+	else if (totalMarks >= 78 && totalMarks <= 81) return 3.3;
+	else if (totalMarks >= 74 && totalMarks <= 77) return 3.0;
+	else if (totalMarks >=70  && totalMarks <=73 ) return 2.7;
+	else if (totalMarks >= 66 && totalMarks <= 69) return 2.3;
+	else if (totalMarks >=62  && totalMarks <=65 ) return 2.0;
+	else if (totalMarks >= 58 && totalMarks <= 61) return 1.7;
+	else if (totalMarks >= 54 && totalMarks <= 57) return 1.3;
+	else if (totalMarks >= 50 && totalMarks <= 53) return 1.0;
+	else if (totalMarks <=50) return 0.0;
+
+}
+
+void  calcuateSGPA(Student &s) 
+{
+	int totalCrHrs = 0;
+	float totalsum = 0;
+	for (int i = 0; i < 7; i++) 
+	{
+		totalCrHrs += s.subjects[i].crHrs;
+		float gp = getGradePoint(s.subjects[i].totalMarks);
+		totalsum += (gp * s.subjects[i].crHrs);
+	}
+	s.sgpa = totalsum / totalCrHrs;
+}
+
 
 
 void rankStudents(Student s[])
