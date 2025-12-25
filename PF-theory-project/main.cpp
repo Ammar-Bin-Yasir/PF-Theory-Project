@@ -171,7 +171,7 @@ float calculateSGPA(Student& s)
 float getGradePoint(float totalMarks)
 {
     if (totalMarks >= 90) return 4.0f;
-    else if (totalMarks >= 86) return 4.0f; 
+    else if (totalMarks >= 86) return 3.9f; 
     else if (totalMarks >= 82) return 3.7f; 
     else if (totalMarks >= 78) return 3.3f; 
     else if (totalMarks >= 74) return 3.0f; 
