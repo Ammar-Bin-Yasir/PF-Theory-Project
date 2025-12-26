@@ -51,7 +51,10 @@ int main()
     // 1. Load Data
 	loadDataFromFile(students, "data.csv");
 
-    calculateStudentResults(students[0]);
+	for (int i = 0; i < TotalStudents; i++)
+    {
+        calculateStudentResults(students[i]);
+    }
 
     cout << "\n\n=====================================================\n"
         << "||            Student Management System            ||\n"
@@ -264,8 +267,10 @@ void loadDataFromFile(Student students[], const string& filename)
 
         // ID
 		ss >> s.id;
+
 		// Skip the comma
 		ss.ignore();
+        
         
         // Name
         getline(ss, s.name, ',');
