@@ -31,7 +31,7 @@ A standard **4.0 GPA scale**, commonly used in Pakistani engineering universitie
 | Percentage Range | Letter Grade | Grade Points |
 |------------------|--------------|--------------|
 | 90% and above | A+ | 4.0 |
-| 86% – 89% | A | 4.0 |
+| 86% – 89% | A | 3.9 |
 | 82% – 85% | A- | 3.7 |
 | 78% – 81% | B+ | 3.3 |
 | 74% – 77% | B | 3.0 |
@@ -129,11 +129,16 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 
 ### 3.3 Core Functions
 
-- `loadRecords()` — Loads student data from CSV files  
-- `calculateGPA()` — Computes SGPA and assigns grades  
-- `rankStudents()` — Sorts students by GPA  
-- `updateRecords()` — Enables searching and record modification  
-- `generateReports()` — Exports analytical reports to a file  
+- `loadMockData()` — Initializes the system with sample student records and course scores for testing.  
+- `calculateStudentResults()` — Triggers the calculation logic for a student's total marks, grade points, and final SGPA.
+- `courseTotalMarks()`_ Calculates the final score for a single course by summing up individual assessment marks.
+- `getGradePoint()`_ Converts a numerical score into a grade point (e.g., 4.0) based on the grading scale.
+- `getGradeLetter()`_ Returns the alphabetical grade (e.g., "A+") corresponding to the marks achieved in a course.
+- `calculateSGPA()`_ Computes the weighted average of grade points across all courses for the current semester.
+- `getSemesterGrade()`_ Provides a descriptive academic standing or final letter grade based on the calculated SGPA.
+- `rankStudents()` — Sorts students by GPA. 
+- `updateRecords()` — Enables searching and record modification. 
+- `generateReports()` — Exports analytical reports to a file. 
 
 ---
 
