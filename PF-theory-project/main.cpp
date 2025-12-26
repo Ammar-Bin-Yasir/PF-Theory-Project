@@ -161,7 +161,7 @@ float calculateSGPA(const Student& s)
         }
     }
 
-    
+      
     if (totalCrHrs == 0) return 0.0f;
 
     return totalQualityPoints / totalCrHrs;
