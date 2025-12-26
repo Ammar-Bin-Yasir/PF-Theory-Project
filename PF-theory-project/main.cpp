@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
 #include <iomanip> 
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
 // Constants
-const int TotalSubjects = 7;
-const int TotalStudents = 50;
+const int TotalSubjects = 8;
+const int TotalStudents = 20;
 
 struct Course
 {
@@ -32,6 +34,7 @@ struct Student
 
 // Function Prototypes
 void loadMockData(Student students[]);
+void loadDataFromFile(Student students[], const string& filename);
 void calculateStudentResults(Student& s);
 float courseTotalMarks(const Course& c);
 float getGradePoint(float totalMarks);
@@ -39,17 +42,18 @@ string getGradeLetter(float totalMarks);
 float calculateSGPA(const Student& s);
 string getSemesterGrade(float sgpa);
 
+
 int main()
 {
     // Heap allocation for large array
     Student* students = new Student[TotalStudents]{};
 
     // 1. Load Data
-    loadMockData(students);
+	loadDataFromFile(students, "data.csv");
 
     calculateStudentResults(students[0]);
 
-    cout << "=====================================================\n"
+    cout << "\n\n=====================================================\n"
         << "||            Student Management System            ||\n"
         << "=====================================================\n\n";
 
@@ -72,17 +76,6 @@ int main()
         {
         case 1:
         {
-            // Simple display to verify logic
-            cout << "\n--- Student Record ---\n";
-            cout << "ID: " << students[0].id << "\n";
-            cout << "Name: " << students[0].name << "\n";
-            // Show the specific subject details
-            cout << "Subject: " << students[0].subjects[0].courseName << "\n";
-            cout << "  - Total Marks: " << students[0].subjects[0].totalMarks << "\n";
-            cout << "  - Letter Grade: " << students[0].subjects[0].coursegrade << "\n";
-            cout << "----------------------\n";
-            cout << "Semester SGPA: " << students[0].sgpa << "\n";
-            cout << "Final Semester Grade: " << students[0].finalGrade << "\n";
             break;
         }
         case 2:
@@ -130,6 +123,7 @@ void calculateStudentResults(Student& s)
     s.finalGrade = getSemesterGrade(s.sgpa);
 }
 
+// Uses the individual test scores to calculate total weighted marks out of 100
 float courseTotalMarks(const Course& c)
 {
     
@@ -144,10 +138,11 @@ float courseTotalMarks(const Course& c)
     return total;
 }
 
+// Calculate SGPA based on the courses taken by the student
 float calculateSGPA(const Student& s)
 {
     int totalCrHrs = 0;
-    float totalQualityPoints = 0.0f;
+    float coursePoints = 0.0f;
 
     for (int i = 0; i < TotalSubjects; i++)
     {
@@ -157,14 +152,14 @@ float calculateSGPA(const Student& s)
 
             float gp = getGradePoint(s.subjects[i].totalMarks);
 
-            totalQualityPoints += (gp * s.subjects[i].crHrs);
+            coursePoints += (gp * s.subjects[i].crHrs);
         }
     }
 
       
     if (totalCrHrs == 0) return 0.0f;
 
-    return totalQualityPoints / totalCrHrs;
+    return coursePoints / totalCrHrs;
 }
 
 
@@ -214,6 +209,7 @@ string getSemesterGrade(float sgpa)
     else if (sgpa >= 1.3f) return "D+";
     else if (sgpa >= 1.0f) return "D"; 
     else if (sgpa >= 0.0f) return "F";
+	else return "N/A";
 }
 
 
@@ -233,4 +229,73 @@ void loadMockData(Student students[])
     students[0].subjects[0].mids = 25;
     students[0].subjects[0].finals = 40;
 
+}
+
+
+void loadDataFromFile(Student students[], const string& filename)
+{
+	// Open the file
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        cerr << "Error opening file: " << filename << endl;
+        return;
+    }
+    else
+    {
+        cout << "File opened successfully: " << filename << endl;
+	}
+
+
+    string line, headers;
+    int studentIndex = 0;
+
+	cout << "Loading data from file...\n";
+
+    // Separate the headers
+	getline(file, headers);
+
+    while (getline(file, line) && studentIndex < TotalStudents )
+    {
+		// Makes the line into a stream (the same mechanism as cin and cout uses) so we can use << and >> operators on the string
+        stringstream ss(line);
+
+        Student& s = students[studentIndex];
+
+        // ID
+		ss >> s.id;
+		// Skip the comma
+		ss.ignore();
+        
+        // Name
+        getline(ss, s.name, ',');
+
+		// Subjects: (PF, PF_crHrs, PF_quiz1, PF_quiz2, PF_assignment, PF_mids, PF_finals, ...)
+        for (int i = 0; i < TotalSubjects; i++)
+        {
+            getline(ss, s.subjects[i].courseName, ',');
+
+            ss >> s.subjects[i].crHrs;
+            ss.ignore();
+
+            ss >> s.subjects[i].quiz[0];
+            ss.ignore();
+
+            ss >> s.subjects[i].quiz[1];
+            ss.ignore();
+
+            ss >> s.subjects[i].assignment;
+            ss.ignore();
+
+            ss >> s.subjects[i].mids;
+            ss.ignore();
+
+            ss >> s.subjects[i].finals;
+            ss.ignore();
+        }
+        studentIndex++;
+    }
+    file.close();
+
+	cout << "Data loading completed. Total students loaded: " << studentIndex << endl;
 }
