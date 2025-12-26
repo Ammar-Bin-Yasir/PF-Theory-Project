@@ -3,12 +3,13 @@
 #include <iomanip> 
 #include <fstream>
 #include <sstream>
-
+#include <cstdlib>
 using namespace std;
 
 // Constants
 const int TotalSubjects = 8;
 const int TotalStudents = 20;
+static string header_row;
 
 struct Course
 {
@@ -33,17 +34,24 @@ struct Student
 };
 
 // Function Prototypes
-string formatFloat(float value, int precision);
-void printrow(int col,int colWidth,bool newline,bool plus);
-void printCell(const string& data,int cellWidth);
+void saveDataToFile(Student students[], const string& filename = "data.csv");
+void loadDataFromFile(Student students[], const string& filename = "data.csv");
 void loadMockData(Student students[]);
-void loadDataFromFile(Student students[], const string& filename);
+
+void displayStudents(Student students[]);
+
+void sortStudents(Student students[], bool ascending = true);
+
 void calculateStudentResults(Student& s);
 float courseTotalMarks(const Course& c);
 float getGradePoint(float totalMarks);
 string getGradeLetter(float totalMarks);
 float calculateSGPA(const Student& s);
 string getSemesterGrade(float sgpa);
+
+string formatFloat(float value, int precision);
+void printrow(int col,int colWidth, bool newline = true, bool plus = true);
+void printCell(const string& data,int cellWidth);
 
 
 int main()
@@ -59,7 +67,7 @@ int main()
         calculateStudentResults(students[i]);
     }
 
-    cout << "\n\n=====================================================\n"
+    cout << "==================================================== = \n"
         << "||            Student Management System            ||\n"
         << "=====================================================\n\n";
 
@@ -82,59 +90,142 @@ int main()
         {
         case 1:
         {
-			int maxNameLength = 0;
-            for (int i = 0; i < TotalStudents; i++) 
-                maxNameLength = max(maxNameLength, static_cast<int>(students[i].name.length()));
-            printrow(1, 4,false,true);
-            printrow(1,maxNameLength, false,false);
-			printrow(TotalSubjects + 2 , 8,true,false);
-			cout << "| ID |";
-			printCell("Name", maxNameLength);
-            for (int i = 0; i < TotalSubjects; i++)
-            {
-				printCell(students[0].subjects[i].courseName, 8);
-
-            }
-			printCell("SGPA", 8);
-			printCell("Grade", 8);
-			cout << endl;
-            printrow(1, 4, false, true);
-            printrow(1, maxNameLength, false, false);
-            printrow(TotalSubjects + 2, 8, true, false);
-            cout << fixed << setprecision(2);
-
-            for (int i = 0; i < TotalStudents; i++)
-            {
-                cout << "|";
-                printCell(to_string(students[i].id), 4);
-                printCell(students[i].name, maxNameLength);
-
-                for (int j = 0; j < TotalSubjects; j++)
-                {
-                    
-                    printCell(formatFloat(students[i].subjects[j].totalMarks,2), 8);
-                }
-
-                printCell(formatFloat(students[i].sgpa,2), 8);
-                printCell(students[i].finalGrade, 8);
-                cout << endl;
-            }
-            printrow(1, 4, false, true);
-            printrow(1, maxNameLength, false, false);
-            printrow(TotalSubjects + 2, 8, true, false);
-
-
-
+            displayStudents(students);
             break;
         }
         case 2:
             break;
         case 3:
+        {
+            int id, index;
+            bool found = false;
+            cout << "Enter the id of the Student you want to update: ";
+            cin >> id;
+            for (static int i = 0; i < TotalStudents; i++)
+            {
+                if (students[i].id == id)
+                {
+                    found = true;
+                    index = i;
+                    break;
+                }
+            }
+            if (!found)
+                cout << "Student not found.\nInvalid Student id";
+
+
+            int subject, choice;
+            cout << "   Select which Subject you want to update.\n";
+            for (int i = 0; i < TotalSubjects; i++) cout << (i + 1) << ". " << students[index].subjects[i].courseName << "\n";
+            cin >> subject;
+
+            subject--;
+
+            Course& s = students[index].subjects[subject];
+            cout << "   Select which marks you want to update.\n    1.Quiz1\n    2.Quiz2\n    3.Assignment\n    4.Mids\n    5.Finals\n";
+            cin >> choice;
+
+            switch (choice)
+            {
+                case 1:
+                {
+                    float marks;
+                    while (true)
+                    {
+                        cout << "Enter Updated marks (0-10) ";
+                        cin >> marks;
+                        if (marks >= 0.0 && marks <= 10.0)
+                            break;  
+                    }
+                    s.quiz[0] = marks;
+                    break;
+                }
+                case 2:
+                {
+                    float marks;
+                    while (true)
+                    {
+                        cout << "Enter Updated marks (0-10) ";
+                        cin >> marks;
+                        if (marks >= 0.0 && marks <= 10.0)
+                            break;
+                    }
+                    s.quiz[1] = marks;
+                    break;
+                }
+                case 3:
+                {
+                    float marks;
+                    while (true)
+                    {
+                        cout << "Enter Updated marks (0-10) ";
+                        cin >> marks;
+                        if (marks >= 0.0 && marks <= 10.0)
+                            break;
+                    }
+                    s.assignment = marks;
+                    break;
+                }
+                case 4:
+                {
+                    float marks;
+                    while (true)
+                    {
+                        cout << "Enter Updated marks (0-30) ";
+                        cin >> marks;
+                        if (marks >= 0.0 && marks <= 30.0)
+                            break;
+                    }
+                    s.mids = marks;
+                    break;
+                }
+                case 5:
+                {
+                    float marks;
+                    while (true)
+                    {
+                        cout << "Enter Updated marks (0-50) ";
+                        cin >> marks;
+                        if (marks >= 0.0 && marks <= 50.0)
+                            break;
+                    }
+                    s.finals = marks;
+                    break;
+                }
+            }
+
+            saveDataToFile(students);
             break;
+        }
         case 4:
             break;
         case 5:
+        {
+            int option;
+            while (true) 
+            {
+                cout << "1. Sort in ascending order\n"
+                    << "2. Sort in descending order\n";
+                cin >> option;
+                if (option == 1 || option == 2)
+                    break;
+            }
+            string file;
+            while (true)
+            {
+                cout << "Enter the file name in to store the sorted data to.\n";
+                cin >> file;
+                if (file.ends_with(".txt") || file.ends_with(".csv"))
+                    break;
+                else
+                    cout << "file not supported.\nsupported formats (\".txt\", \".csv\")\n";
+            }
+
+            sortStudents(students, option == 1 ? 1 : 0);
+            displayStudents(students);
+            saveDataToFile(students, file);
             break;
+        }
         case 6:
             break;
         case 7:
@@ -153,175 +244,41 @@ int main()
 }
 
 
-
-// Function to Calculate all the results of a Student
-void calculateStudentResults(Student& s)
-{
-    // Populate the Course array
-    for (int i = 0; i < TotalSubjects; i++)
-    {
-        if (s.subjects[i].crHrs > 0)
-        {
-            s.subjects[i].totalMarks = courseTotalMarks(s.subjects[i]);
-            s.subjects[i].coursegrade = getGradeLetter(s.subjects[i].totalMarks);
-        }
-    }
-
-	// Calculate SGPA and Final Grade
-    s.sgpa = calculateSGPA(s);
-    s.finalGrade = getSemesterGrade(s.sgpa);
-}
-
-// Uses the individual test scores to calculate total weighted marks out of 100
-float courseTotalMarks(const Course& c)
-{
-    
-    float total = 0.0f;
-    float quizTotal = c.quiz[0] + c.quiz[1]; 
-
-    total += (quizTotal / 20.0f) * 10.0f; 
-    total += (c.assignment / 10.0f) * 10.0f; 
-    total += (c.mids / 30.0f) * 30.0f;       
-    total += (c.finals / 50.0f) * 50.0f;     
-
-    return total;
-}
-
-// Calculate SGPA based on the courses taken by the student
-float calculateSGPA(const Student& s)
-{
-    int totalCrHrs = 0;
-    float coursePoints = 0.0f;
-
-    for (int i = 0; i < TotalSubjects; i++)
-    {
-        if (s.subjects[i].crHrs > 0) 
-        {
-            totalCrHrs += s.subjects[i].crHrs;
-
-            float gp = getGradePoint(s.subjects[i].totalMarks);
-
-            coursePoints += (gp * s.subjects[i].crHrs);
-        }
-    }
-
-      
-    if (totalCrHrs == 0) return 0.0f;
-
-    return coursePoints / totalCrHrs;
-}
-
-
-float getGradePoint(float totalMarks)
-{
-    if (totalMarks >= 90) return 4.0f;
-    else if (totalMarks >= 86) return 3.9f; 
-    else if (totalMarks >= 82) return 3.7f; 
-    else if (totalMarks >= 78) return 3.3f; 
-    else if (totalMarks >= 74) return 3.0f; 
-    else if (totalMarks >= 70) return 2.7f; 
-    else if (totalMarks >= 66) return 2.3f; 
-    else if (totalMarks >= 62) return 2.0f; 
-    else if (totalMarks >= 58) return 1.7f; 
-    else if (totalMarks >= 54) return 1.3f; 
-    else if (totalMarks >= 50) return 1.0f; 
-    else return 0.0f; 
-}
-
-string getGradeLetter(float totalMarks)
-{
-    if (totalMarks >= 90) return "A+";
-    else if (totalMarks >= 86) return "A";
-    else if (totalMarks >= 82) return "A-";
-    else if (totalMarks >= 78) return "B+";
-    else if (totalMarks >= 74) return "B";
-    else if (totalMarks >= 70) return "B-";
-    else if (totalMarks >= 66) return "C+";
-    else if (totalMarks >= 62) return "C";
-    else if (totalMarks >= 58) return "C-";
-    else if (totalMarks >= 54) return "D+";
-    else if (totalMarks >= 50) return "D";
-    else return "F";
-}
-
-string getSemesterGrade(float sgpa)
-{
-    if (sgpa >= 4.0f) return "A+";
-    else if (sgpa >= 3.9f) return "A";
-    else if (sgpa >= 3.7f) return "A-";
-    else if (sgpa >= 3.3f) return "B+";
-    else if (sgpa >= 3.0f) return "B";
-    else if (sgpa >= 2.7f) return "B-";
-    else if (sgpa >= 2.3f) return "C+";
-    else if (sgpa >= 2.0f) return "C";
-    else if (sgpa >= 1.7f) return "C-";
-    else if (sgpa >= 1.3f) return "D+";
-    else if (sgpa >= 1.0f) return "D"; 
-    else if (sgpa >= 0.0f) return "F";
-	else return "N/A";
-}
-
-
-
-void loadMockData(Student students[])
-{
-    
-    students[0].id = 2025560;
-    students[0].name = "Ammar Bin Yasir";
-
-    // Setup Subject 1: PF
-    students[0].subjects[0].courseName = "PF";
-    students[0].subjects[0].crHrs = 3;
-    students[0].subjects[0].quiz[0] = 8;
-    students[0].subjects[0].quiz[1] = 9;
-    students[0].subjects[0].assignment = 10;
-    students[0].subjects[0].mids = 25;
-    students[0].subjects[0].finals = 40;
-
-}
-
-
+// File handling functions
 void loadDataFromFile(Student students[], const string& filename)
 {
-	// Open the file
+    // Open the file
     ifstream file(filename);
     if (!file.is_open())
     {
         cerr << "Error opening file: " << filename << endl;
         return;
     }
-    else
-    {
-        cout << "File opened successfully: " << filename << endl;
-	}
 
-
-    string line, headers;
+    string line;
     int studentIndex = 0;
 
-	cout << "Loading data from file...\n";
-
     // Separate the headers
-	getline(file, headers);
+    getline(file, header_row);
 
-    while (getline(file, line) && studentIndex < TotalStudents )
+    while (getline(file, line) && studentIndex < TotalStudents)
     {
-		// Makes the line into a stream (the same mechanism as cin and cout uses) so we can use << and >> operators on the string
+        // Makes the line into a stream (the same mechanism as cin and cout uses) so we can use << and >> operators on the string
         stringstream ss(line);
 
         Student& s = students[studentIndex];
 
         // ID
-		ss >> s.id;
+        ss >> s.id;
 
-		// Skip the comma
-		ss.ignore();
-        
-        
+        // Skip the comma
+        ss.ignore();
+
+
         // Name
         getline(ss, s.name, ',');
 
-		// Subjects: (PF, PF_crHrs, PF_quiz1, PF_quiz2, PF_assignment, PF_mids, PF_finals, ...)
+        // Subjects: (PF, PF_crHrs, PF_quiz1, PF_quiz2, PF_assignment, PF_mids, PF_finals, ...)
         for (int i = 0; i < TotalSubjects; i++)
         {
             getline(ss, s.subjects[i].courseName, ',');
@@ -347,12 +304,209 @@ void loadDataFromFile(Student students[], const string& filename)
         studentIndex++;
     }
     file.close();
+}
+void saveDataToFile(Student students[], const string& filename)
+{
+    ofstream file(filename);
+    if (!file.is_open())
+    {
+        cerr << "Error opening file for writing: " << filename << endl;
+        return;
+    }
 
-	cout << "Data loading completed. Total students loaded: " << studentIndex << endl;
+    // Write headers
+    file << header_row << endl;
+
+    // Write student data to the file
+    for (int i = 0; i < TotalStudents; i++)
+    {
+        const Student& s = students[i];
+        file << s.id << "," << s.name << ",";
+
+        for (int j = 0; j < TotalSubjects; j++)
+        {
+            const Course& sub = s.subjects[j];
+            file << sub.courseName << "," << sub.crHrs << "," << sub.quiz[0] << "," << sub.quiz[1] << ","
+                << sub.assignment << "," << sub.mids << "," << sub.finals << ",";
+        }
+        file << endl;
+    }
+
+    file.close();
+    cout << "Data saved successfully to: " << filename << endl;
 }
 
 
-void printrow(int col,int colWidth,bool newline= true, bool plus = true) 
+// Calculation functions
+void calculateStudentResults(Student& s)
+{
+    // Populate the Course array
+    for (int i = 0; i < TotalSubjects; i++)
+    {
+        if (s.subjects[i].crHrs > 0)
+        {
+            s.subjects[i].totalMarks = courseTotalMarks(s.subjects[i]);
+            s.subjects[i].coursegrade = getGradeLetter(s.subjects[i].totalMarks);
+        }
+    }
+
+	// Calculate SGPA and Final Grade
+    s.sgpa = calculateSGPA(s);
+    s.finalGrade = getSemesterGrade(s.sgpa);
+}
+// Uses the individual test scores to calculate total weighted marks out of 100
+float courseTotalMarks(const Course& c)
+{
+    
+    float total = 0.0f;
+    float quizTotal = c.quiz[0] + c.quiz[1]; 
+
+    total += (quizTotal / 20.0f) * 10.0f; 
+    total += (c.assignment / 10.0f) * 10.0f; 
+    total += (c.mids / 30.0f) * 30.0f;       
+    total += (c.finals / 50.0f) * 50.0f;     
+
+    return total;
+}
+// Calculate SGPA based on the courses taken by the student
+float calculateSGPA(const Student& s)
+{
+    int totalCrHrs = 0;
+    float coursePoints = 0.0f;
+
+    for (int i = 0; i < TotalSubjects; i++)
+    {
+        if (s.subjects[i].crHrs > 0) 
+        {
+            totalCrHrs += s.subjects[i].crHrs;
+
+            float gp = getGradePoint(s.subjects[i].totalMarks);
+
+            coursePoints += (gp * s.subjects[i].crHrs);
+        }
+    }
+
+      
+    if (totalCrHrs == 0) return 0.0f;
+
+    return coursePoints / totalCrHrs;
+}
+float getGradePoint(float totalMarks)
+{
+    if (totalMarks >= 90) return 4.0f;
+    else if (totalMarks >= 86) return 3.9f; 
+    else if (totalMarks >= 82) return 3.7f; 
+    else if (totalMarks >= 78) return 3.3f; 
+    else if (totalMarks >= 74) return 3.0f; 
+    else if (totalMarks >= 70) return 2.7f; 
+    else if (totalMarks >= 66) return 2.3f; 
+    else if (totalMarks >= 62) return 2.0f; 
+    else if (totalMarks >= 58) return 1.7f; 
+    else if (totalMarks >= 54) return 1.3f; 
+    else if (totalMarks >= 50) return 1.0f; 
+    else return 0.0f; 
+}
+string getGradeLetter(float totalMarks)
+{
+    if (totalMarks >= 90) return "A+";
+    else if (totalMarks >= 86) return "A";
+    else if (totalMarks >= 82) return "A-";
+    else if (totalMarks >= 78) return "B+";
+    else if (totalMarks >= 74) return "B";
+    else if (totalMarks >= 70) return "B-";
+    else if (totalMarks >= 66) return "C+";
+    else if (totalMarks >= 62) return "C";
+    else if (totalMarks >= 58) return "C-";
+    else if (totalMarks >= 54) return "D+";
+    else if (totalMarks >= 50) return "D";
+    else return "F";
+}
+string getSemesterGrade(float sgpa)
+{
+    if (sgpa >= 4.0f) return "A+";
+    else if (sgpa >= 3.9f) return "A";
+    else if (sgpa >= 3.7f) return "A-";
+    else if (sgpa >= 3.3f) return "B+";
+    else if (sgpa >= 3.0f) return "B";
+    else if (sgpa >= 2.7f) return "B-";
+    else if (sgpa >= 2.3f) return "C+";
+    else if (sgpa >= 2.0f) return "C";
+    else if (sgpa >= 1.7f) return "C-";
+    else if (sgpa >= 1.3f) return "D+";
+    else if (sgpa >= 1.0f) return "D"; 
+    else if (sgpa >= 0.0f) return "F";
+	else return "N/A";
+}
+
+// Display Functions
+void displayStudents(Student students[])
+{
+    int maxNameLength = 0;
+    for (int i = 0; i < TotalStudents; i++)
+        maxNameLength = max(maxNameLength, static_cast<int>(students[i].name.length()));
+    printrow(1, 4, false);
+    printrow(1, maxNameLength, false, false);
+    printrow(TotalSubjects + 2, 8, true, false);
+    cout << "|";
+    printCell("ID", 4);
+    printCell("Name", maxNameLength);
+    for (int i = 0; i < TotalSubjects; i++)
+    {
+        printCell(students[0].subjects[i].courseName, 8);
+
+    }
+    printCell("SGPA", 8);
+    printCell("Grade", 8);
+    cout << endl;
+    printrow(1, 4, false, true);
+    printrow(1, maxNameLength, false, false);
+    printrow(TotalSubjects + 2, 8, true, false);
+    cout << fixed << setprecision(2);
+
+    for (int i = 0; i < TotalStudents; i++)
+    {
+        cout << "|";
+        printCell(to_string(students[i].id), 4);
+        printCell(students[i].name, maxNameLength);
+
+        for (int j = 0; j < TotalSubjects; j++)
+        {
+
+            printCell(formatFloat(students[i].subjects[j].totalMarks, 2), 8);
+        }
+
+        printCell(formatFloat(students[i].sgpa, 2), 8);
+        printCell(students[i].finalGrade, 8);
+        cout << endl;
+    }
+    printrow(1, 4, false, true);
+    printrow(1, maxNameLength, false, false);
+    printrow(TotalSubjects + 2, 8, true, false);
+}
+
+
+
+// Utility/feature Functions
+void sortStudents(Student students[], bool ascending)
+{
+    for (int i = 0; i < TotalStudents - 1; i++)
+    {
+        for (int j = 0; j < TotalStudents - i - 1; j++)
+        {
+            bool condition = ascending ? (students[j].sgpa > students[j + 1].sgpa) : (students[j].sgpa < students[j + 1].sgpa);
+            if (condition)
+            {
+                swap(students[j], students[j + 1]);
+            }
+        }
+    }
+}
+
+
+
+
+// Helper Functions
+void printrow(int col,int colWidth,bool newline, bool plus) 
 {
      if(plus) cout << "+";
 
@@ -362,17 +516,31 @@ void printrow(int col,int colWidth,bool newline= true, bool plus = true)
     }
 	if (newline) cout << endl;
 }
-
 void printCell(const string& data,int cellWidth)
 {
 	int len = data.length();
     cout << left << setw(cellWidth) << data << "|";
+    return;
 }
-
-
 string formatFloat(float value, int precision = 2)
 {
     stringstream ss;
     ss << fixed << setprecision(precision) << value;
     return ss.str();
+}
+void loadMockData(Student students[])
+{
+
+    students[0].id = 2025560;
+    students[0].name = "Ammar Bin Yasir";
+
+    // Setup Subject 1: PF
+    students[0].subjects[0].courseName = "PF";
+    students[0].subjects[0].crHrs = 3;
+    students[0].subjects[0].quiz[0] = 8;
+    students[0].subjects[0].quiz[1] = 9;
+    students[0].subjects[0].assignment = 10;
+    students[0].subjects[0].mids = 25;
+    students[0].subjects[0].finals = 40;
+
 }
