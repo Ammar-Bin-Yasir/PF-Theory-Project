@@ -33,6 +33,9 @@ struct Student
 };
 
 // Function Prototypes
+string formatFloat(float value, int precision);
+void printrow(int col,int colWidth,bool newline,bool plus);
+void printCell(const string& data,int cellWidth);
 void loadMockData(Student students[]);
 void loadDataFromFile(Student students[], const string& filename);
 void calculateStudentResults(Student& s);
@@ -79,6 +82,49 @@ int main()
         {
         case 1:
         {
+			int maxNameLength = 0;
+            for (int i = 0; i < TotalStudents; i++) 
+                maxNameLength = max(maxNameLength, static_cast<int>(students[i].name.length()));
+            printrow(1, 4,false,true);
+            printrow(1,maxNameLength, false,false);
+			printrow(TotalSubjects + 2 , 8,true,false);
+			cout << "| ID |";
+			printCell("Name", maxNameLength);
+            for (int i = 0; i < TotalSubjects; i++)
+            {
+				printCell(students[0].subjects[i].courseName, 8);
+
+            }
+			printCell("SGPA", 8);
+			printCell("Grade", 8);
+			cout << endl;
+            printrow(1, 4, false, true);
+            printrow(1, maxNameLength, false, false);
+            printrow(TotalSubjects + 2, 8, true, false);
+            cout << fixed << setprecision(2);
+
+            for (int i = 0; i < TotalStudents; i++)
+            {
+                cout << "|";
+                printCell(to_string(students[i].id), 4);
+                printCell(students[i].name, maxNameLength);
+
+                for (int j = 0; j < TotalSubjects; j++)
+                {
+                    
+                    printCell(formatFloat(students[i].subjects[j].totalMarks,2), 8);
+                }
+
+                printCell(formatFloat(students[i].sgpa,2), 8);
+                printCell(students[i].finalGrade, 8);
+                cout << endl;
+            }
+            printrow(1, 4, false, true);
+            printrow(1, maxNameLength, false, false);
+            printrow(TotalSubjects + 2, 8, true, false);
+
+
+
             break;
         }
         case 2:
@@ -303,4 +349,30 @@ void loadDataFromFile(Student students[], const string& filename)
     file.close();
 
 	cout << "Data loading completed. Total students loaded: " << studentIndex << endl;
+}
+
+
+void printrow(int col,int colWidth,bool newline= true, bool plus = true) 
+{
+     if(plus) cout << "+";
+
+    for (int i = 0; i < col; i++)
+    {
+		cout << string(colWidth, '-') << "+";
+    }
+	if (newline) cout << endl;
+}
+
+void printCell(const string& data,int cellWidth)
+{
+	int len = data.length();
+    cout << left << setw(cellWidth) << data << "|";
+}
+
+
+string formatFloat(float value, int precision = 2)
+{
+    stringstream ss;
+    ss << fixed << setprecision(precision) << value;
+    return ss.str();
 }
