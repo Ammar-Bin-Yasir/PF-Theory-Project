@@ -633,3 +633,14 @@ void loadMockData(Student students[])
 	students[0].subjects[0].finals = 40;
 
 }
+
+float subjectAverage(Student students[], int subjectIndex) 
+{
+	float average = 0.0f;
+	for (int i = 0; i < TotalStudents; i++) 
+	{
+		average += students[i].subjects[subjectIndex].totalMarks;
+	}
+	return average / TotalStudents;
+}
+
