@@ -39,6 +39,7 @@ void loadDataFromFile(Student students[], const string& filename = "data.csv");
 void loadMockData(Student students[]);
 
 void displayStudents(Student students[]);
+void displayStudentProfile(const Student& s);
 
 void sortStudents(Student students[], bool ascending = true);
 
@@ -94,7 +95,27 @@ int main()
             break;
         }
         case 2:
+        {
+            int id, index;
+            bool found = false;
+            cout << "Enter the id of the Student you want to search: ";
+            cin >> id;
+            for (static int i = 0; i < TotalStudents; i++)
+            {
+                if (students[i].id == id)
+                {
+                    found = true;
+                    index = i;
+                    break;
+                }
+            }
+            if (!found)
+                cout << "Student not found.\nInvalid Student id";
+
+            displayStudentProfile(students[index]);
+
             break;
+        }
         case 3:
         {
             int id, index;
@@ -483,6 +504,72 @@ void displayStudents(Student students[])
     printrow(1, maxNameLength, false, false);
     printrow(TotalSubjects + 2, 8, true, false);
 }
+
+
+void displayStudentProfile(const Student& s)
+{
+
+    //Top Header Info
+    cout << string(100, '-') << endl;
+
+    cout << "| Name: " << setw(91) << left << s.name << "|" << endl;
+    cout << "| ID: " << setw(93) << left << s.id << "|" << endl;
+
+    //Table Headers using Helper functions
+    printrow(9, 10, true, true);
+    cout << "|";
+    printCell("Course", 10);
+    printCell("Quiz 1", 10);
+    printCell("Quiz 2", 10);
+    printCell("Assign.", 10);
+    printCell("Mids", 10);
+    printCell("Finals", 10);
+    printCell("Total", 10);
+    printCell("CGPA", 10);
+    printCell("Grade", 10);
+    cout << endl;
+    printrow(9, 10, true, true);
+
+    //Course Data Row
+    for (int j = 0; j < TotalSubjects; j++)
+    {
+        if (s.subjects[j].crHrs > 0) {
+            cout << "|";
+            printCell(s.subjects[j].courseName, 10);
+            printCell(formatFloat(s.subjects[j].quiz[0], 2), 10);
+            printCell(formatFloat(s.subjects[j].quiz[1], 2), 10);
+            printCell(formatFloat(s.subjects[j].assignment, 2), 10);
+            printCell(formatFloat(s.subjects[j].mids, 2), 10);
+            printCell(formatFloat(s.subjects[j].finals, 2), 10);
+            printCell(formatFloat(s.subjects[j].totalMarks, 2), 10);
+            printCell(formatFloat(getGradePoint(s.subjects[j].totalMarks), 2), 10);
+            printCell(s.subjects[j].coursegrade, 10);
+            cout << endl;
+        }
+    }
+        printrow(9, 10, true, true);
+        cout << "|";
+        printCell("", 10);
+        printCell("", 10);
+        printCell("", 10);
+        printCell("", 10);
+        printCell("", 10);
+        printCell("", 10);
+        printCell("", 10);
+		printCell(formatFloat(s.sgpa, 2), 10);
+        printCell(s.finalGrade, 10);
+        cout << endl;
+		printrow(9, 10, true, true);
+
+
+
+
+
+
+
+
+}
+
 
 
 
