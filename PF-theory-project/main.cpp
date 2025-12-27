@@ -4,6 +4,9 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <algorithm>
+#include <ios>
+#include <utility>
 
 using namespace std;
 
@@ -37,7 +40,8 @@ struct Student
 // Function Prototypes
 void saveDataToFile(Student students[], const string& filename = "data.csv");
 void loadDataFromFile(Student students[], const string& filename = "data.csv");
-void loadMockData(Student students[]);
+void saveReportToFile(const Student s[], const string& file);
+
 
 void displayStudents(Student students[]);
 void displayStudentProfile(const Student& s);
@@ -95,11 +99,13 @@ int main()
 
         switch (n)
         {
+		// Display the summary table of all students
         case 1:
         {
             displayStudents(students);
             break;
         }
+		// Display the report of a specific student
         case 2:
         {
 			system("cls");
@@ -107,7 +113,7 @@ int main()
             bool found = false;
             cout << "Enter the id of the Student you want to search: ";
             cin >> id;
-            for (static int i = 0; i < TotalStudents; i++)
+            for (int i = 0; i < TotalStudents; i++)
             {
                 if (students[i].id == id)
                 {
@@ -118,11 +124,11 @@ int main()
             }
             if (!found)
                 cout << "Student not found.\nInvalid Student id";
-
-            displayStudentProfile(students[index]);
-
+			else
+				displayStudentProfile(students[index]);
             break;
         }
+		// Update the data of a specific student
         case 3:
         {
 			system("cls");
@@ -139,20 +145,36 @@ int main()
                     break;
                 }
             }
-            if (!found)
+			if (!found)
+			{
                 cout << "Student not found.\nInvalid Student id";
+				break;
+			}
 
 
 			int subject, choice;
 			cout << "Select which Subject you want to update.\n";
-			for (int i = 0; i < TotalSubjects; i++) cout << (i + 1) << ". " << students[index].subjects[i].courseName << "\n";
-			cin >> subject;
+
+			for (int i = 0; i < TotalSubjects; i++)
+				cout << (i + 1) << ". " << students[index].subjects[i].courseName << "\n";
+			while (true)
+			{
+				cin >> subject;
+				if (subject >= 1 && subject <= TotalSubjects)
+					break;
+			}
 
 			subject--;
 
 			Course& s = students[index].subjects[subject];
-			cout << "Select which marks you want to update.\n1.Quiz1\n2.Quiz2\n3.Assignment\n4.Mids\n5.Finals\n";
-			cin >> choice;
+			cout << "Select which marks you want to update.\n1.Quiz 1\n2.Quiz 2\n3.Assignment\n4.Mids\n5.Finals\n";
+			
+			while (true)
+			{
+				cin >> choice;
+				if (choice >= 1 && choice <= 5)
+					break;
+			}
 
 			switch (choice)
 			{
@@ -263,6 +285,17 @@ int main()
 		}
 		case 6:
 		{
+			string file;
+			while (true)
+			{
+				cout << "Enter the file name in to store the sorted data to.\n";
+				cin >> file;
+				if (file.ends_with(".txt") || file.ends_with(".csv"))
+					break;
+				else
+					cout << "file not supported.\nsupported formats (\".txt\", \".csv\")\n";
+			}
+			saveReportToFile(students, file);
 
 			break;
 		}
@@ -371,6 +404,33 @@ void saveDataToFile(Student students[], const string& filename)
 
 	file.close();
 	cout << "Data saved successfully to: " << filename << endl;
+}
+void saveReportToFile(const Student s[], const string& file)
+{
+	ofstream report(file);
+	if (!report.is_open())
+	{
+		cout << "Error opening file for writing: " << file << endl;
+		return;
+	}
+	
+	report << "Subject, Topper (Score), Class Average, Pass/Fail Ratio" << endl;
+	for (int i = 0; i < TotalSubjects; i++)
+	{
+		report << s[0].subjects[i].courseName << ",";
+		float topScore;
+		int topIndex;
+		topScore = topper(s, i, topIndex);
+
+		report << s[topIndex].name << " (" << formatFloat(topScore) << "), ";
+
+		report << formatFloat(subjectAverage(s, i)) << ",";
+
+		report << to_string(TotalStudents - passFailRatio(s, i)) << "/" << to_string(passFailRatio(s, i)) << endl;
+	}
+
+	report.close();
+	cout << "Data saved successfully to: " << file << endl;
 }
 
 
@@ -582,7 +642,7 @@ void displayStudentProfile(const Student& s)
 void reportGeneration(const Student s[])
 {
 	cout << string(149, '-') << endl;
-	cout << "|                                                           SEMESTER ANALYTICS REPORT " <<"                                                              |" << endl;
+	cout << "|                                                           SEMESTER ANALYTICS REPORT " << "                                                              |" << endl;
 	printrow(4, 36);
 	cout << "|";
 	printCell("Subject", 36);
@@ -653,23 +713,6 @@ string formatFloat(float value, int precision)
 	ss << fixed << setprecision(precision) << value;
 	return ss.str();
 }
-void loadMockData(Student students[])
-{
-
-	students[0].id = 2025560;
-	students[0].name = "Ammar Bin Yasir";
-
-	// Setup Subject 1: PF
-	students[0].subjects[0].courseName = "PF";
-	students[0].subjects[0].crHrs = 3;
-	students[0].subjects[0].quiz[0] = 8;
-	students[0].subjects[0].quiz[1] = 9;
-	students[0].subjects[0].assignment = 10;
-	students[0].subjects[0].mids = 25;
-	students[0].subjects[0].finals = 40;
-
-}
-
 float subjectAverage(const Student students[], int subjectIndex) 
 {
 	float average = 0.0f;
@@ -679,7 +722,6 @@ float subjectAverage(const Student students[], int subjectIndex)
 	}
 	return average / TotalStudents;
 }
-
 int passFailRatio(const Student student[], int subjectIndex)
 {
 	int fail = 0;
@@ -691,7 +733,6 @@ int passFailRatio(const Student student[], int subjectIndex)
 
 	return fail;
 }
-
 float topper(const Student students[], int subjectIndex,int &topperIndex)
 {
 	float topScore = 0.0f;
