@@ -129,6 +129,7 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 
 ### 3.3 Core Functions
 **File Operations**
+
 -`saveDataToFile()` — Serializes the current array of student objects into a structured CSV file for long-term storage.
 
 -`loadDataFromFile()` — Populates the program's data structures by reading student records and grades from an existing CSV file.
@@ -136,6 +137,7 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 -`saveReportToFile()` — Exports a formatted academic performance report to an external text file for printing or distribution.
 
 **Display and Reporting**
+
 -`displayStudents()` — Iterates through the student list to provide a summary view of all enrolled students.
 
 -`displayStudentProfile()` — Displays a detailed view of a specific student's personal information and individual course scores.
@@ -143,9 +145,11 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 -`reportGeneration()` — Orchestrates the creation of comprehensive academic summaries, including averages and top performers.
 
 **Data Management**
+
 -`sortStudents()` — Reorders the student records based on specific criteria in either ascending or descending order.
 
 **Academic Logic & Calculations**
+
 -`calculateStudentResults()` — Triggers the comprehensive calculation logic for total marks, grade points, and SGPA for a specific student.
 
 -`courseTotalMarks()` — Sums up weighted assessments (assignments, exams, etc.) to determine the final score for a single course.
@@ -159,6 +163,7 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 -`getSemesterGrade()` — Determines the final academic standing or descriptive grade based on the calculated SGPA.
 
 **Utilities & Analytics**
+
 -`formatFloat()` — A helper utility that rounds and converts floating-point numbers into strings with specific decimal precision.
 
 -`printrow()` — A UI helper that generates consistent horizontal dividers and borders for tabular terminal output.
