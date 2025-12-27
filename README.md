@@ -128,17 +128,48 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 ---
 
 ### 3.3 Core Functions
+**File Operations**
+-`saveDataToFile()` — Serializes the current array of student objects into a structured CSV file for long-term storage.
 
-- `loadMockData()` — Initializes the system with sample student records and course scores for testing.  
-- `calculateStudentResults()` — Triggers the calculation logic for a student's total marks, grade points, and final SGPA.
-- `courseTotalMarks()`_ Calculates the final score for a single course by summing up individual assessment marks.
-- `getGradePoint()`_ Converts a numerical score into a grade point (e.g., 4.0) based on the grading scale.
-- `getGradeLetter()`_ Returns the alphabetical grade (e.g., "A+") corresponding to the marks achieved in a course.
-- `calculateSGPA()`_ Computes the weighted average of grade points across all courses for the current semester.
-- `getSemesterGrade()`_ Provides a descriptive academic standing or final letter grade based on the calculated SGPA.
-- `rankStudents()` — Sorts students by GPA. 
-- `updateRecords()` — Enables searching and record modification. 
-- `generateReports()` — Exports analytical reports to a file. 
+-`loadDataFromFile()` — Populates the program's data structures by reading student records and grades from an existing CSV file.
+
+-`saveReportToFile()` — Exports a formatted academic performance report to an external text file for printing or distribution.
+
+**Display and Reporting**
+-`displayStudents()` — Iterates through the student list to provide a summary view of all enrolled students.
+
+-`displayStudentProfile()` — Displays a detailed view of a specific student's personal information and individual course scores.
+
+-`reportGeneration()` — Orchestrates the creation of comprehensive academic summaries, including averages and top performers.
+
+**Data Management**
+-`sortStudents()` — Reorders the student records based on specific criteria in either ascending or descending order.
+
+**Academic Logic & Calculations**
+-`calculateStudentResults()` — Triggers the comprehensive calculation logic for total marks, grade points, and SGPA for a specific student.
+
+-`courseTotalMarks()` — Sums up weighted assessments (assignments, exams, etc.) to determine the final score for a single course.
+
+-`getGradePoint()` — Maps a numerical course score to a standardized grade point value (e.g., 3.7).
+
+-`getGradeLetter()` — Assigns the appropriate alphabetical grade (e.g., "B+") based on total marks earned in a course.
+
+-`calculateSGPA()` — Computes the Semester Grade Point Average by weighting grade points against course credit hours.
+
+-`getSemesterGrade()` — Determines the final academic standing or descriptive grade based on the calculated SGPA.
+
+**Utilities & Analytics**
+-`formatFloat()` — A helper utility that rounds and converts floating-point numbers into strings with specific decimal precision.
+
+-`printrow()` — A UI helper that generates consistent horizontal dividers and borders for tabular terminal output.
+
+-`printCell()` — Handles the alignment and padding of data within a specific column width for table consistency.
+
+-`topper()` — Identifies the highest-scoring student in a specific subject and returns both their score and index.
+
+-`subjectAverage()` — Calculates the mean score across all students for a specific course or assessment.
+
+-`passFailRatio()` — Computes the number of students who met the passing criteria versus those who did not for a specific subject.
 
 ---
 
