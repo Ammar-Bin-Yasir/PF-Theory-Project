@@ -41,6 +41,7 @@ void loadMockData(Student students[]);
 
 void displayStudents(Student students[]);
 void displayStudentProfile(const Student& s);
+void reportGeneration(const Student s[]);
 
 void sortStudents(Student students[], bool ascending = true);
 
@@ -54,6 +55,12 @@ string getSemesterGrade(float sgpa);
 string formatFloat(float value, int precision = 2);
 void printrow(int col,int colWidth, bool newline = true, bool plus = true);
 void printCell(const string& data,int cellWidth);
+float topper(const Student students[], int subjectIndex,int &topperIndex);
+float subjectAverage(const Student students[], int subjectIndex);
+int passFailRatio(const Student student[], int subjectIndex);
+
+
+
 
 
 int main()
@@ -250,8 +257,8 @@ int main()
 		}
 		case 5:
 		{
-
-
+			system("cls");
+			reportGeneration(students);
 			break;
 		}
 		case 6:
@@ -574,6 +581,30 @@ void displayStudentProfile(const Student& s)
 }
 void reportGeneration(const Student s[])
 {
+	cout << string(149, '-') << endl;
+	cout << "|                                                           SEMESTER ANALYTICS REPORT " <<"                                                              |" << endl;
+	printrow(4, 36);
+	cout << "|";
+	printCell("Subject", 36);
+	printCell("Topper(score)", 36);
+	printCell("Class Average", 36);
+	printCell("Pass/Fail Ratio", 36);
+	cout << endl;
+	printrow(4,36);
+	for (int i = 0; i < TotalSubjects; i++)
+	{
+		cout << "|";
+		printCell(s[0].subjects[i].courseName, 36);
+		int topperIndex = 0;
+		float topScore = topper(s, i, topperIndex);
+		printCell((s[topperIndex].name + "(" + formatFloat(topScore) + ")"), 36);
+		printCell(formatFloat(subjectAverage(s, i)), 36);
+		int fails = passFailRatio(s, i);
+		printCell(to_string(TotalStudents - fails) + "/" + to_string(fails), 36);
+		cout << endl;
+	}
+	printrow(4, 36);
+
 
 }
 
@@ -659,4 +690,18 @@ int passFailRatio(const Student student[], int subjectIndex)
 	}
 
 	return fail;
+}
+
+float topper(const Student students[], int subjectIndex,int &topperIndex)
+{
+	float topScore = 0.0f;
+	for (int i = 0; i < TotalStudents; i++)
+	{
+		if (students[i].subjects[subjectIndex].totalMarks > topScore)
+		{
+			topperIndex = i;
+			topScore = students[i].subjects[subjectIndex].totalMarks;
+		}
+	}
+	return topScore;
 }
