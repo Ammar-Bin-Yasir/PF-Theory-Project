@@ -9,7 +9,7 @@ using namespace std;
 
 // Constants
 const int TotalSubjects = 8;
-const int TotalStudents = 50;
+const int TotalStudents = 55;
 static string header_row;
 
 struct Course
