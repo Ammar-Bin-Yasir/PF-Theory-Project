@@ -215,7 +215,7 @@ int main()
 			}
 			saveDataToFile(students);
 			calculateStudentResults(students[index]);
-			displayStudents(students);
+			displayStudentProfile(students[index]);
 			break;
 		}
 		case 4:
