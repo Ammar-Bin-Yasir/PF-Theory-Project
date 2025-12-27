@@ -251,6 +251,7 @@ int main()
 		case 5:
 		{
 
+
 			break;
 		}
 		case 6:
@@ -571,6 +572,10 @@ void displayStudentProfile(const Student& s)
 		printrow(9, 10, true, true);
 		return;
 }
+void reportGeneration(const Student s[])
+{
+
+}
 
 
 
@@ -634,7 +639,7 @@ void loadMockData(Student students[])
 
 }
 
-float subjectAverage(Student students[], int subjectIndex) 
+float subjectAverage(const Student students[], int subjectIndex) 
 {
 	float average = 0.0f;
 	for (int i = 0; i < TotalStudents; i++) 
@@ -644,3 +649,14 @@ float subjectAverage(Student students[], int subjectIndex)
 	return average / TotalStudents;
 }
 
+int passFailRatio(const Student student[], int subjectIndex)
+{
+	int fail = 0;
+	for (int i = 0; i < TotalStudents; i++)
+	{
+		if (student[i].subjects[subjectIndex].coursegrade == "F")
+			fail += 1;
+	}
+
+	return fail;
+}
