@@ -79,11 +79,10 @@ int main()
 			<< "1. Display the table of all (current) records.\n"
 			<< "2. Search a Student based on their ID.\n"
 			<< "3. Update Student Marks.\n"
-			<< "4. Delete Student from the table.\n"
-			<< "5. Sort the Student list in (ACS/DESC).\n"
-			<< "6. View Analytics & Statistics.\n"
-			<< "7. Export Reports in a file.\n"
-			<< "8. Save and Exit.\n"
+			<< "4. Sort the Student list in (ACS/DESC).\n"
+			<< "5. View Analytics & Statistics.\n"
+			<< "6. Export Reports in a file.\n"
+			<< "7. Save and Exit.\n"
 			<< "Select Option: ";
 		cin >> n;
 
@@ -220,8 +219,6 @@ int main()
 			break;
 		}
 		case 4:
-			break;
-		case 5:
 		{
 			int option;
 			while (true) 
@@ -248,18 +245,18 @@ int main()
 			saveDataToFile(students, file);
 			break;
 		}
+		case 5:
+			break;
 		case 6:
 			break;
 		case 7:
-			break;
-		case 8:
 			cout << "Saving and Exiting...\n";
 			break;
 		default:
 			cout << "Invalid option. Please try again.\n";
 		}
 
-	} while (n != 8);
+	} while (n != 7);
 
 	delete[] students;
 	return 0;
@@ -505,8 +502,6 @@ void displayStudents(Student students[])
 	printrow(1, maxNameLength, false, false);
 	printrow(TotalSubjects + 2, 8, true, false);
 }
-
-
 void displayStudentProfile(const Student& s)
 {
 
@@ -561,14 +556,7 @@ void displayStudentProfile(const Student& s)
         printCell(s.finalGrade, 10);
         cout << endl;
 		printrow(9, 10, true, true);
-
-
-
-
-
-
-
-
+		return;
 }
 
 
