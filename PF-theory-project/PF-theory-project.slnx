@@ -3,9 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Folder Name="/Solution Items/">
-    <File Path="data.txt" />
-    <File Path="sorted.csv" />
-  </Folder>
   <Project Path="PF-theory-project.vcxproj" Id="231674b3-ed33-4813-b361-9fad8f7b8e3c" />
 </Solution>
