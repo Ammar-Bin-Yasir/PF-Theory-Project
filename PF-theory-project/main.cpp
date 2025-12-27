@@ -9,7 +9,7 @@ using namespace std;
 
 // Constants
 const int TotalSubjects = 8;
-const int TotalStudents = 20;
+const int TotalStudents = 50;
 static string header_row;
 
 struct Course
@@ -51,7 +51,7 @@ string getGradeLetter(float totalMarks);
 float calculateSGPA(const Student& s);
 string getSemesterGrade(float sgpa);
 
-string formatFloat(float value, int precision);
+string formatFloat(float value, int precision = 2);
 void printrow(int col,int colWidth, bool newline = true, bool plus = true);
 void printCell(const string& data,int cellWidth);
 
@@ -95,6 +95,7 @@ int main()
         }
         case 2:
         {
+			system("cls");
             int id, index;
             bool found = false;
             cout << "Enter the id of the Student you want to search: ";
@@ -117,6 +118,7 @@ int main()
         }
         case 3:
         {
+			system("cls");
             int id, index;
             bool found = false;
             cout << "Enter the id of the Student you want to update: ";
@@ -220,6 +222,7 @@ int main()
 		}
 		case 4:
 		{
+			system("cls");
 			int option;
 			while (true) 
 			{
@@ -246,11 +249,18 @@ int main()
 			break;
 		}
 		case 5:
+		{
+
 			break;
+		}
 		case 6:
+		{
+
 			break;
+		}
 		case 7:
 			cout << "Saving and Exiting...\n";
+			saveDataToFile(students);
 			break;
 		default:
 			cout << "Invalid option. Please try again.\n";
@@ -270,7 +280,7 @@ void loadDataFromFile(Student students[], const string& filename)
 	ifstream file(filename);
 	if (!file.is_open())
 	{
-		cerr << "Error opening file: " << filename << endl;
+		cout << "Error opening file: " << filename << endl;
 		return;
 	}
 
@@ -329,7 +339,7 @@ void saveDataToFile(Student students[], const string& filename)
 	ofstream file(filename);
 	if (!file.is_open())
 	{
-		cerr << "Error opening file for writing: " << filename << endl;
+		cout << "Error opening file for writing: " << filename << endl;
 		return;
 	}
 
@@ -410,6 +420,7 @@ float calculateSGPA(const Student& s)
 
 	return coursePoints / totalCrHrs;
 }
+// Converts (0-100) range to gpa scale (0.0 - 4.0)
 float getGradePoint(float totalMarks)
 {
 	if (totalMarks >= 90) return 4.0f;
@@ -425,6 +436,7 @@ float getGradePoint(float totalMarks)
 	else if (totalMarks >= 50) return 1.0f; 
 	else return 0.0f; 
 }
+// Converts (0-100) range to grade e.g A+,D
 string getGradeLetter(float totalMarks)
 {
 	if (totalMarks >= 90) return "A+";
@@ -440,6 +452,7 @@ string getGradeLetter(float totalMarks)
 	else if (totalMarks >= 50) return "D";
 	else return "F";
 }
+// Converts (0.0 - 4.0) sgpa to final grade e.g A+, A-
 string getSemesterGrade(float sgpa)
 {
 	if (sgpa >= 4.0f) return "A+";
@@ -538,7 +551,7 @@ void displayStudentProfile(const Student& s)
             printCell(formatFloat(s.subjects[j].mids, 2), 10);
             printCell(formatFloat(s.subjects[j].finals, 2), 10);
             printCell(formatFloat(s.subjects[j].totalMarks, 2), 10);
-            printCell(formatFloat(getGradePoint(s.subjects[j].totalMarks), 2), 10);
+            printCell(formatFloat(getGradePoint(s.subjects[j].totalMarks)), 10);
             printCell(s.subjects[j].coursegrade, 10);
             cout << endl;
         }
@@ -598,7 +611,7 @@ void printCell(const string& data,int cellWidth)
 	cout << left << setw(cellWidth) << data << "|";
 	return;
 }
-string formatFloat(float value, int precision = 2)
+string formatFloat(float value, int precision)
 {
 	stringstream ss;
 	ss << fixed << setprecision(precision) << value;
