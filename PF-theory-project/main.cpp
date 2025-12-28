@@ -102,6 +102,7 @@ int main()
 		// Display the summary table of all students
         case 1:
         {
+			system("cls");
             displayStudents(students);
             break;
         }
@@ -235,9 +236,9 @@ int main()
 					float marks;
 					while (true)
 					{
-						cout << "Enter Updated marks (0-50): ";
+						cout << "Enter Updated marks (0-40): ";
 						cin >> marks;
-						if (marks >= 0.0 && marks <= 50.0)
+						if (marks >= 0.0 && marks <= 40.0)
 							break;
 					}
 					s.finals = marks;
@@ -458,10 +459,10 @@ float courseTotalMarks(const Course& c)
 	float total = 0.0f;
 	float quizTotal = c.quiz[0] + c.quiz[1]; 
 
-	total += (quizTotal / 20.0f) * 10.0f; 
+	total += (quizTotal / 20.0f) * 20.0f; 
 	total += (c.assignment / 10.0f) * 10.0f; 
 	total += (c.mids / 30.0f) * 30.0f;       
-	total += (c.finals / 50.0f) * 50.0f;     
+	total += (c.finals / 50.0f) * 40.0f;     
 
 	return total;
 }
