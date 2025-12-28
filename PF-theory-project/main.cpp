@@ -675,14 +675,33 @@ void reportGeneration(const Student s[])
 // Utility/feature Functions
 void sortStudents(Student students[], bool ascending)
 {
+	int sortID;
+	cout << "1. Sort based on ID\n2. Sort Based on total Marks\n";
+	while (true)
+	{
+		cin >> sortID;
+		if (sortID == 1 || sortID == 2)
+			break;
+	}
 	for (int i = 0; i < TotalStudents - 1; i++)
 	{
 		for (int j = 0; j < TotalStudents - i - 1; j++)
 		{
-			bool condition = ascending ? (students[j].sgpa > students[j + 1].sgpa) : (students[j].sgpa < students[j + 1].sgpa);
-			if (condition)
+			if (sortID == 2)
 			{
-				swap(students[j], students[j + 1]);
+				bool condition = ascending ? (students[j].sgpa > students[j + 1].sgpa) : (students[j].sgpa < students[j + 1].sgpa);
+				if (condition)
+				{
+					swap(students[j], students[j + 1]);
+				}
+			}
+			else
+			{
+				bool condition = ascending ? (students[j].id > students[j + 1].id) : (students[j].id < students[j + 1].id);
+				if (condition)
+				{
+					swap(students[j], students[j + 1]);
+				}
 			}
 		}
 	}
