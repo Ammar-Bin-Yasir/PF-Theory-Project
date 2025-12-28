@@ -97,58 +97,58 @@ int main()
 			<< "Select Option: ";
 		cin >> n;
 
-        switch (n)
-        {
+		switch (n)
+		{
 		// Display the summary table of all students
-        case 1:
-        {
+		case 1:
+		{
 			system("cls");
-            displayStudents(students);
-            break;
-        }
+			displayStudents(students);
+			break;
+		}
 		// Display the report of a specific student
-        case 2:
-        {
+		case 2:
+		{
 			system("cls");
-            int id, index;
-            bool found = false;
-            cout << "Enter the id of the Student you want to search: ";
-            cin >> id;
-            for (int i = 0; i < TotalStudents; i++)
-            {
-                if (students[i].id == id)
-                {
-                    found = true;
-                    index = i;
-                    break;
-                }
-            }
-            if (!found)
-                cout << "Student not found.\nInvalid Student id";
+			int id, index;
+			bool found = false;
+			cout << "Enter the id of the Student you want to search: ";
+			cin >> id;
+			for (int i = 0; i < TotalStudents; i++)
+			{
+				if (students[i].id == id)
+				{
+					found = true;
+					index = i;
+					break;
+				}
+			}
+			if (!found)
+				cout << "Student not found.\nInvalid Student id";
 			else
 				displayStudentProfile(students[index]);
-            break;
-        }
+			break;
+		}
 		// Update the data of a specific student
-        case 3:
-        {
+		case 3:
+		{
 			system("cls");
-            int id, index;
-            bool found = false;
-            cout << "Enter the id of the Student you want to update: ";
-            cin >> id;
-            for (static int i = 0; i < TotalStudents; i++)
-            {
-                if (students[i].id == id)
-                {
-                    found = true;
-                    index = i;
-                    break;
-                }
-            }
+			int id, index;
+			bool found = false;
+			cout << "Enter the id of the Student you want to update: ";
+			cin >> id;
+			for (static int i = 0; i < TotalStudents; i++)
+			{
+				if (students[i].id == id)
+				{
+					found = true;
+					index = i;
+					break;
+				}
+			}
 			if (!found)
 			{
-                cout << "Student not found.\nInvalid Student id";
+				cout << "Student not found.\nInvalid Student id";
 				break;
 			}
 
@@ -414,7 +414,7 @@ void saveReportToFile(const Student s[], const string& file)
 		cout << "Error opening file for writing: " << file << endl;
 		return;
 	}
-	
+	report << "					SEMESTER REPORT						" << endl << endl;
 	report << "Subject, Topper (Score), Class Average, Pass/Fail Ratio" << endl;
 	for (int i = 0; i < TotalSubjects; i++)
 	{
@@ -587,56 +587,56 @@ void displayStudents(Student students[])
 void displayStudentProfile(const Student& s)
 {
 
-    //Top Header Info
-    cout << string(100, '-') << endl;
+	//Top Header Info
+	cout << string(100, '-') << endl;
 
-    cout << "| Name: " << setw(91) << left << s.name << "|" << endl;
-    cout << "| ID: " << setw(93) << left << s.id << "|" << endl;
+	cout << "| Name: " << setw(91) << left << s.name << "|" << endl;
+	cout << "| ID: " << setw(93) << left << s.id << "|" << endl;
 
-    //Table Headers using Helper functions
-    printrow(9, 10, true, true);
-    cout << "|";
-    printCell("Course", 10);
-    printCell("Quiz 1", 10);
-    printCell("Quiz 2", 10);
-    printCell("Assign.", 10);
-    printCell("Mids", 10);
-    printCell("Finals", 10);
-    printCell("Total", 10);
-    printCell("CGPA", 10);
-    printCell("Grade", 10);
-    cout << endl;
-    printrow(9, 10, true, true);
+	//Table Headers using Helper functions
+	printrow(9, 10, true, true);
+	cout << "|";
+	printCell("Course", 10);
+	printCell("Quiz 1", 10);
+	printCell("Quiz 2", 10);
+	printCell("Assign.", 10);
+	printCell("Mids", 10);
+	printCell("Finals", 10);
+	printCell("Total", 10);
+	printCell("CGPA", 10);
+	printCell("Grade", 10);
+	cout << endl;
+	printrow(9, 10, true, true);
 
-    //Course Data Row
-    for (int j = 0; j < TotalSubjects; j++)
-    {
-        if (s.subjects[j].crHrs > 0) {
-            cout << "|";
-            printCell(s.subjects[j].courseName, 10);
-            printCell(formatFloat(s.subjects[j].quiz[0], 2), 10);
-            printCell(formatFloat(s.subjects[j].quiz[1], 2), 10);
-            printCell(formatFloat(s.subjects[j].assignment, 2), 10);
-            printCell(formatFloat(s.subjects[j].mids, 2), 10);
-            printCell(formatFloat(s.subjects[j].finals, 2), 10);
-            printCell(formatFloat(s.subjects[j].totalMarks, 2), 10);
-            printCell(formatFloat(getGradePoint(s.subjects[j].totalMarks)), 10);
-            printCell(s.subjects[j].coursegrade, 10);
-            cout << endl;
-        }
-    }
-        printrow(9, 10, true, true);
-        cout << "|";
-        printCell("", 10);
-        printCell("", 10);
-        printCell("", 10);
-        printCell("", 10);
-        printCell("", 10);
-        printCell("", 10);
-        printCell("", 10);
+	//Course Data Row
+	for (int j = 0; j < TotalSubjects; j++)
+	{
+		if (s.subjects[j].crHrs > 0) {
+			cout << "|";
+			printCell(s.subjects[j].courseName, 10);
+			printCell(formatFloat(s.subjects[j].quiz[0], 2), 10);
+			printCell(formatFloat(s.subjects[j].quiz[1], 2), 10);
+			printCell(formatFloat(s.subjects[j].assignment, 2), 10);
+			printCell(formatFloat(s.subjects[j].mids, 2), 10);
+			printCell(formatFloat(s.subjects[j].finals, 2), 10);
+			printCell(formatFloat(s.subjects[j].totalMarks, 2), 10);
+			printCell(formatFloat(getGradePoint(s.subjects[j].totalMarks)), 10);
+			printCell(s.subjects[j].coursegrade, 10);
+			cout << endl;
+		}
+	}
+		printrow(9, 10, true, true);
+		cout << "|";
+		printCell("", 10);
+		printCell("", 10);
+		printCell("", 10);
+		printCell("", 10);
+		printCell("", 10);
+		printCell("", 10);
+		printCell("", 10);
 		printCell(formatFloat(s.sgpa, 2), 10);
-        printCell(s.finalGrade, 10);
-        cout << endl;
+		printCell(s.finalGrade, 10);
+		cout << endl;
 		printrow(9, 10, true, true);
 		return;
 }
