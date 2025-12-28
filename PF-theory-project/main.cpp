@@ -289,7 +289,7 @@ int main()
 			string file;
 			while (true)
 			{
-				cout << "Enter the file name in to store the sorted data to.\n";
+				cout << "Enter the file name in to store the Semester Analytics and Reports to.\n";
 				cin >> file;
 				if (file.ends_with(".txt") || file.ends_with(".csv"))
 					break;
