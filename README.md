@@ -62,23 +62,24 @@ To ensure modularity and interdependence, the following assumptions were establi
 
 - **Component Weightage:**  
   Each course is evaluated out of **100 marks**, distributed as:
-  - Quizzes (2): 10%  
+  - Quizzes (2): 20%  
   - Assignments: 10%  
   - Mid-Term Exam: 30%  
-  - Final Exam: 50%
+  - Final Exam: 40%
 
 #### Sample CSV Structure
 
-| Student_ID | Name | Math(T) | Physics(T) | PF(T) | English(T) | ICT(T) | PF_Lab(L) | ICT_Lab(L) | SGPA | Grade |
-|------------|------|---------|------------|-------|-------------|--------|------------|-------------|------|--------|
-| 2025560 | Ammar Bin Yasir | 85.5 | 78.0 | 92.0 | 88.5 | 81.0 | 95.0 | 88.0 | 3.82 | A- |
+| ID | Name | Course Name | Cr.Hrs | Quiz1 | Quiz2 | Assignment | Mids | Finals | ... | 
+|------------|------|---------|------------|-------|-------------|--------|------------|-------------|------|
+| 560 | Ammar Bin Yasir | PF | 3 | 10 | 8 | 10 | 28 | 35 | ... |
 
 **CSV File Specifications**
 - The first row contains column headers  
-- `Student_ID` serves as the primary key (integer)  
-- `Name` contains the student’s full name  
-- Intermediate columns represent course names with weighted marks  
-- Final columns store **SGPA** and **Grade**  
+- `ID` serves as the primary key (integer)  
+- `Name` contains the student’s full name
+- `Course Name` contains the name of the course the student is taking
+- `Cr.Hrs` are the number of credit hours in that course
+- The subsequent columns are for the marks of that student in that course for his quizzes, assignments, mids, and finals.
 - The file is loaded at program startup and updated upon any modification  
 
 - **Pass/Fail Criteria:**  
@@ -98,7 +99,7 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 
 **Execution Flow:**
 1. Initialize an array of `Student` structures  
-2. Load student data from `students.csv` using `loadRecords()`  
+2. Load student data from `students.csv` using `loadRecords().`  
 3. Enter a `do-while` loop with menu-based options  
 4. Perform selected operations via switch cases  
 
@@ -106,14 +107,13 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 1. Display all student records  
 2. Search for a student by ID  
 3. Update student marks  
-4. Delete a student record  
-5. Sort records (ascending or descending order)  
-6. View analytics and statistics  
+4. Sort records (ascending or descending order)  
+5. View analytics and statistics  
    - Topper list  
    - Subject-wise averages  
    - Pass/Fail ratio  
-7. Export reports to a user-specified file path  
-8. Save changes and exit  
+6. Export reports to a user-specified file path  
+7. Save changes and exit  
 
 ---
 
@@ -128,23 +128,59 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 ---
 
 ### 3.3 Core Functions
+**File Operations**
 
-- `loadMockData()` — Initializes the system with sample student records and course scores for testing.  
-- `calculateStudentResults()` — Triggers the calculation logic for a student's total marks, grade points, and final SGPA.
-- `courseTotalMarks()`_ Calculates the final score for a single course by summing up individual assessment marks.
-- `getGradePoint()`_ Converts a numerical score into a grade point (e.g., 4.0) based on the grading scale.
-- `getGradeLetter()`_ Returns the alphabetical grade (e.g., "A+") corresponding to the marks achieved in a course.
-- `calculateSGPA()`_ Computes the weighted average of grade points across all courses for the current semester.
-- `getSemesterGrade()`_ Provides a descriptive academic standing or final letter grade based on the calculated SGPA.
-- `rankStudents()` — Sorts students by GPA. 
-- `updateRecords()` — Enables searching and record modification. 
-- `generateReports()` — Exports analytical reports to a file. 
+-`saveDataToFile()` — Serializes the current array of student objects into a structured CSV file for long-term storage.
+
+-`loadDataFromFile()` — Populates the program's data structures by reading student records and grades from an existing CSV file.
+
+-`saveReportToFile()` — Exports a formatted academic performance report to an external text file for printing or distribution.
+
+**Display and Reporting**
+
+-`displayStudents()` — Iterates through the student list to provide a summary view of all enrolled students.
+
+-`displayStudentProfile()` — Displays a detailed view of a specific student's personal information and individual course scores.
+
+-`reportGeneration()` — Orchestrates the creation of comprehensive academic summaries, including averages and top performers.
+
+**Data Management**
+
+-`sortStudents()` — Reorders the student records based on specific criteria in either ascending or descending order.
+
+**Academic Logic & Calculations**
+
+-`calculateStudentResults()` — Triggers the comprehensive calculation logic for total marks, grade points, and SGPA for a specific student.
+
+-`courseTotalMarks()` — Sums up weighted assessments (assignments, exams, etc.) to determine the final score for a single course.
+
+-`getGradePoint()` — Maps a numerical course score to a standardized grade point value (e.g., 3.7).
+
+-`getGradeLetter()` — Assigns the appropriate alphabetical grade (e.g., "B+") based on total marks earned in a course.
+
+-`calculateSGPA()` — Computes the Semester Grade Point Average by weighting grade points against course credit hours.
+
+-`getSemesterGrade()` — Determines the final academic standing or descriptive grade based on the calculated SGPA.
+
+**Utilities & Analytics**
+
+-`formatFloat()` — A helper utility that rounds and converts floating-point numbers into strings with specific decimal precision.
+
+-`printrow()` — A UI helper that generates consistent horizontal dividers and borders for tabular terminal output.
+
+-`printCell()` — Handles the alignment and padding of data within a specific column width for table consistency.
+
+-`topper()` — Identifies the highest-scoring student in a specific subject and returns both their score and index.
+
+-`subjectAverage()` — Calculates the mean score across all students for a specific course or assessment.
+
+-`passFailRatio()` — Computes the number of students who met the passing criteria versus those who did not for a specific subject.
 
 ---
 
 ## 4. How to Run the Program
 
-1. Place `students.txt` in the same directory as the executable  
+1. Place `data.csv` in the same directory as the executable  
 2. Compile the source code using any standard C++ compiler  
 3. Run the program and interact using the menu-driven interface  
 
