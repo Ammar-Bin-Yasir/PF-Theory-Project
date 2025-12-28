@@ -62,23 +62,24 @@ To ensure modularity and interdependence, the following assumptions were establi
 
 - **Component Weightage:**  
   Each course is evaluated out of **100 marks**, distributed as:
-  - Quizzes (2): 10%  
+  - Quizzes (2): 20%  
   - Assignments: 10%  
   - Mid-Term Exam: 30%  
-  - Final Exam: 50%
+  - Final Exam: 40%
 
 #### Sample CSV Structure
 
-| Student_ID | Name | Math(T) | Physics(T) | PF(T) | English(T) | ICT(T) | PF_Lab(L) | ICT_Lab(L) | SGPA | Grade |
-|------------|------|---------|------------|-------|-------------|--------|------------|-------------|------|--------|
-| 2025560 | Ammar Bin Yasir | 85.5 | 78.0 | 92.0 | 88.5 | 81.0 | 95.0 | 88.0 | 3.82 | A- |
+| ID | Name | Course Name | Cr.Hrs | Quiz1 | Quiz2 | Assignment | Mids | Finals | ... | 
+|------------|------|---------|------------|-------|-------------|--------|------------|-------------|------|
+| 560 | Ammar Bin Yasir | PF | 3 | 10 | 8 | 10 | 28 | 35 | ... |
 
 **CSV File Specifications**
 - The first row contains column headers  
-- `Student_ID` serves as the primary key (integer)  
-- `Name` contains the student’s full name  
-- Intermediate columns represent course names with weighted marks  
-- Final columns store **SGPA** and **Grade**  
+- `ID` serves as the primary key (integer)  
+- `Name` contains the student’s full name
+- `Course Name` contains the name of the course the student is taking
+- `Cr.Hrs` are the number of credit hours in that course
+- The subsequent columns are for the marks of that student in that course for his quizzes, assignments, mids, and finals.
 - The file is loaded at program startup and updated upon any modification  
 
 - **Pass/Fail Criteria:**  
@@ -98,7 +99,7 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 
 **Execution Flow:**
 1. Initialize an array of `Student` structures  
-2. Load student data from `students.csv` using `loadRecords()`  
+2. Load student data from `students.csv` using `loadRecords().`  
 3. Enter a `do-while` loop with menu-based options  
 4. Perform selected operations via switch cases  
 
@@ -106,14 +107,13 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 1. Display all student records  
 2. Search for a student by ID  
 3. Update student marks  
-4. Delete a student record  
-5. Sort records (ascending or descending order)  
-6. View analytics and statistics  
+4. Sort records (ascending or descending order)  
+5. View analytics and statistics  
    - Topper list  
    - Subject-wise averages  
    - Pass/Fail ratio  
-7. Export reports to a user-specified file path  
-8. Save changes and exit  
+6. Export reports to a user-specified file path  
+7. Save changes and exit  
 
 ---
 
@@ -180,7 +180,7 @@ The `main()` function provides a menu-driven user interface and coordinates all 
 
 ## 4. How to Run the Program
 
-1. Place `students.txt` in the same directory as the executable  
+1. Place `data.csv` in the same directory as the executable  
 2. Compile the source code using any standard C++ compiler  
 3. Run the program and interact using the menu-driven interface  
 
