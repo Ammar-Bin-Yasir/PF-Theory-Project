@@ -20,7 +20,7 @@ The application allows a teacher to:
 
 ---
 
-## 2. Problem Understanding and Assumptions (A9)
+## 2. Problem Understanding and Assumptions
 
 Due to partially ill-defined requirements, the following grading policies and system constraints were explicitly defined to ensure correctness and consistency.
 
