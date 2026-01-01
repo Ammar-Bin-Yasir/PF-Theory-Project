@@ -95,7 +95,17 @@ int main()
 			<< "6. Export Reports in a file.\n"
 			<< "7. Save and Exit.\n"
 			<< "Select Option: ";
-		cin >> n;
+		while (true)
+		{
+			cin >> n;
+			if (cin.fail() || n < 0.0)
+			{
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+			else
+				break;
+		}
 
 		switch (n)
 		{
@@ -113,7 +123,17 @@ int main()
 			int id, index;
 			bool found = false;
 			cout << "Enter the id of the Student you want to search: ";
-			cin >> id;
+			while (true)
+			{
+				cin >> id;
+				if (cin.fail() || n < 0)
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+				else
+					break;
+			}
 			for (int i = 0; i < TotalStudents; i++)
 			{
 				if (students[i].id == id)
@@ -136,7 +156,17 @@ int main()
 			int id, index;
 			bool found = false;
 			cout << "Enter the id of the Student you want to update: ";
-			cin >> id;
+			while (true)
+			{
+				cin >> id;
+				if (cin.fail() || n < 0.0)
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+				else
+					break;
+			}
 			for (static int i = 0; i < TotalStudents; i++)
 			{
 				if (students[i].id == id)
@@ -161,6 +191,12 @@ int main()
 			while (true)
 			{
 				cin >> subject;
+				if (cin.fail() || n < 0.0)
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					continue;
+				}
 				if (subject >= 1 && subject <= TotalSubjects)
 					break;
 			}
@@ -173,6 +209,12 @@ int main()
 			while (true)
 			{
 				cin >> choice;
+				if (cin.fail() || n < 0.0)
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					continue;
+				}
 				if (choice >= 1 && choice <= 5)
 					break;
 			}
@@ -186,6 +228,12 @@ int main()
 					{
 						cout << "Enter Updated marks (0-10): ";
 						cin >> marks;
+						if (cin.fail() || n < 0.0)
+						{
+							cin.clear();
+							cin.ignore(numeric_limits<streamsize>::max(), '\n');
+							continue;
+						}
 						if (marks >= 0.0 && marks <= 10.0)
 							break;  
 					}
@@ -199,6 +247,12 @@ int main()
 					{
 						cout << "Enter Updated marks (0-10): ";
 						cin >> marks;
+						if (cin.fail() || n < 0.0)
+						{
+							cin.clear();
+							cin.ignore(numeric_limits<streamsize>::max(), '\n');
+							continue;
+						}
 						if (marks >= 0.0 && marks <= 10.0)
 							break;
 					}
@@ -212,6 +266,12 @@ int main()
 					{
 						cout << "Enter Updated marks (0-10): ";
 						cin >> marks;
+						if (cin.fail() || n < 0.0)
+						{
+							cin.clear();
+							cin.ignore(numeric_limits<streamsize>::max(), '\n');
+							continue;
+						}
 						if (marks >= 0.0 && marks <= 10.0)
 							break;
 					}
@@ -225,6 +285,12 @@ int main()
 					{
 						cout << "Enter Updated marks (0-30): ";
 						cin >> marks;
+						if (cin.fail() || n < 0.0)
+						{
+							cin.clear();
+							cin.ignore(numeric_limits<streamsize>::max(), '\n');
+							continue;
+						}
 						if (marks >= 0.0 && marks <= 30.0)
 							break;
 					}
@@ -238,6 +304,12 @@ int main()
 					{
 						cout << "Enter Updated marks (0-40): ";
 						cin >> marks;
+						if (cin.fail() || n < 0.0)
+						{
+							cin.clear();
+							cin.ignore(numeric_limits<streamsize>::max(), '\n');
+							continue;
+						}
 						if (marks >= 0.0 && marks <= 40.0)
 							break;
 					}
@@ -259,6 +331,12 @@ int main()
 				cout << "1. Sort in ascending order\n"
 					<< "2. Sort in descending order\n";
 				cin >> option;
+				if (cin.fail() || n < 0.0)
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					continue;
+				}
 				if (option == 1 || option == 2)
 					break;
 			}
@@ -267,6 +345,12 @@ int main()
 			{
 				cout << "Enter the file name in to store the sorted data to.\n";
 				cin >> file;
+				if (cin.fail() || n < 0.0)
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					continue;
+				}
 				if (file.ends_with(".txt") || file.ends_with(".csv"))
 					break;
 				else
@@ -291,6 +375,12 @@ int main()
 			{
 				cout << "Enter the file name in to store the Semester Analytics and Reports to.\n";
 				cin >> file;
+				if (cin.fail() || n < 0.0)
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					continue;
+				}
 				if (file.ends_with(".txt") || file.ends_with(".csv"))
 					break;
 				else
@@ -322,7 +412,7 @@ void loadDataFromFile(Student students[], const string& filename)
 	ifstream file(filename);
 	if (!file.is_open())
 	{
-		cout << "Error opening file: " << filename << endl;
+		cerr << "Error opening file: " << filename << endl;
 		return;
 	}
 
