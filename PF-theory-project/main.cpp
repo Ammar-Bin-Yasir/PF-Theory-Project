@@ -3,9 +3,6 @@
 #include <iomanip> 
 #include <fstream>
 #include <sstream>
-#include <cstdlib>
-#include <algorithm>
-#include <ios>
 #include <utility>
 
 using namespace std;
@@ -167,7 +164,7 @@ int main()
 				else
 					break;
 			}
-			for (static int i = 0; i < TotalStudents; i++)
+			for (int i = 0; i < TotalStudents; i++)
 			{
 				if (students[i].id == id)
 				{
@@ -482,11 +479,13 @@ void saveDataToFile(Student students[], const string& filename)
 	for (int i = 0; i < TotalStudents; i++)
 	{
 		const Student& s = students[i];
+
 		file << s.id << "," << s.name << ",";
 
 		for (int j = 0; j < TotalSubjects; j++)
 		{
 			const Course& sub = s.subjects[j];
+
 			file << sub.courseName << "," << sub.crHrs << "," << sub.quiz[0] << "," << sub.quiz[1] << ","
 				<< sub.assignment << "," << sub.mids << "," << sub.finals << ",";
 		}
@@ -504,6 +503,7 @@ void saveReportToFile(const Student s[], const string& file)
 		cout << "Error opening file for writing: " << file << endl;
 		return;
 	}
+
 	report << "					SEMESTER REPORT						" << endl << endl;
 	report << "Subject, Topper (Score), Class Average, Pass/Fail Ratio" << endl;
 	for (int i = 0; i < TotalSubjects; i++)
@@ -552,7 +552,7 @@ float courseTotalMarks(const Course& c)
 	total += (quizTotal / 20.0f) * 20.0f; 
 	total += (c.assignment / 10.0f) * 10.0f; 
 	total += (c.mids / 30.0f) * 30.0f;       
-	total += (c.finals / 50.0f) * 40.0f;     
+	total += (c.finals / 40.0f) * 40.0f;     
 
 	return total;
 }
@@ -568,9 +568,9 @@ float calculateSGPA(const Student& s)
 		{
 			totalCrHrs += s.subjects[i].crHrs;
 
-			float gp = getGradePoint(s.subjects[i].totalMarks);
+			float cgpa = getGradePoint(s.subjects[i].totalMarks);
 
-			coursePoints += (gp * s.subjects[i].crHrs);
+			coursePoints += (cgpa * s.subjects[i].crHrs);
 		}
 	}
 
@@ -766,7 +766,7 @@ void reportGeneration(const Student s[])
 void sortStudents(Student students[], bool ascending)
 {
 	int sortID;
-	cout << "1. Sort based on ID\n2. Sort Based on total Marks\n";
+	cout << "1. Sort based on ID\n2. Sort Based on Semester GPA\n";
 	while (true)
 	{
 		cin >> sortID;
