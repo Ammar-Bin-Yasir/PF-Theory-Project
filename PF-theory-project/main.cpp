@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <utility>
+#include <limits>
 
 using namespace std;
 
@@ -348,7 +349,8 @@ int main()
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 					continue;
 				}
-				if (file.ends_with(".txt") || file.ends_with(".csv"))
+				if ((file.length() >= 4 && file.substr(file.length() - 4) == ".txt") || 
+					(file.length() >= 4 && file.substr(file.length() - 4) == ".csv"))
 					break;
 				else
 					cout << "file not supported.\nsupported formats (\".txt\", \".csv\")\n";
@@ -378,7 +380,8 @@ int main()
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 					continue;
 				}
-				if (file.ends_with(".txt") || file.ends_with(".csv"))
+				if ((file.length() >= 4 && file.substr(file.length() - 4) == ".txt") || 
+					(file.length() >= 4 && file.substr(file.length() - 4) == ".csv"))
 					break;
 				else
 					cout << "file not supported.\nsupported formats (\".txt\", \".csv\")\n";
